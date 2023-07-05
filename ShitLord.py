@@ -50,7 +50,7 @@ async def add_roast(msg):
         await msg.channel.send(message)
     else:
         with open("temp/insults.txt","a") as insultFile:
-            insultFile.write(newInsult)
+            insultFile.write("\n"+newInsult)
         message = str(msg.author.mention) + " : New Insult Added! : '" + newInsult + "' "
         await msg.channel.send(message)
         print(msg.author.name + " added new insult : " +newInsult)
