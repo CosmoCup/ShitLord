@@ -1,17 +1,10 @@
 import asyncio
 import discord
-import os
 from gtts import gTTS
-import time
-import requests
-import pip
 import random
 from pydub import AudioSegment
 
 client = discord.Client()
-#insultURL = "https://evilinsult.com/generate_insult.php?lang=en&type=text"
-#insultURL = "https://insult.mattbas.org/api/insult"
-#requests.packages.urllib3.disable_warnings()
 
 mp3FileName = "temp/text.mp3"
 
@@ -65,8 +58,6 @@ async def roast(msg):
     
     channel = msg.author.voice.channel
 
-    #startTime = round(time.time() * 1000) #---------------
-
     text = createInsult()
     count = 1
     while count < 4 :
@@ -94,9 +85,6 @@ async def roast(msg):
     FullAudio = One + Boom + Two + Boom + Three + Boom + Insult + Earrape
     FullAudio.export("temp/"+ "full.mp3", format="mp3")
 
-    #MillsTook = round(time.time() * 1000) - startTime
-    #print("Insult took : "+str(MillsTook)+" mills")#------
-  
     connection = await channel.connect()
   
     connection.play(discord.FFmpegPCMAudio("temp/full.mp3"))
