@@ -20,6 +20,8 @@ Boom = AudioSegment.from_mp3("temp/boom.mp3")
 tokenf = open(".env", "r")
 token = tokenf.read()
 
+print("Init done")
+
 @client.event
 async def on_ready():
     print(client.user.name + " online")
