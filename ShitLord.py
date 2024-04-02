@@ -1,61 +1,35 @@
+import os
 import asyncio
 import discord
 from gtts import gTTS
 import random
 from pydub import AudioSegment
+from dotenv import load_dotenv
 
-client = discord.Client()
-
+load_dotenv()
+client = discord.Client(intents=discord.Intents.default())
 mp3FileName = "temp/text.mp3"
-
 Boom = AudioSegment.from_mp3("temp/boom.mp3")
-
-tokenf = open(".env", "r")
-token = tokenf.read()
-
-print("Init done")
+token = os.getenv('TOKEN')
 
 @client.event
 async def on_ready():
-    print(client.user.name + " online")
-
+    print("Shit Lord is on the hunt.")
 
 @client.event
 async def on_message(msg):
     author = msg.author
-    if author == client.user:
-        return
-
+    if author == client.user: return
     if client.user.mentioned_in(msg):
-        if '[ADD]' in msg.content:
-            if msg.author.guild_permissions.administrator: 
-                await add_roast(msg)
-            else:
-                message = str(msg.author.mention) + " : You worthless peasant, you need admin for that!"
-                await msg.channel.send(message)
-        else:
             await roast(msg)
-
-async def add_roast(msg):
-    text = str(msg.content)
-    newInsult = text.split('[ADD]')[1]
-    newInsult = newInsult.strip()
-    if newInsult == "" :
-        message = str(msg.author.mention) + " : New insult cannot be blank, dumb shit."
-        await msg.channel.send(message)
-    else:
-        with open("temp/insults.txt","a") as insultFile:
-            insultFile.write("\n"+newInsult)
-        message = str(msg.author.mention) + " : New Insult Added! : '" + newInsult + "' "
-        await msg.channel.send(message)
-        print(msg.author.name + " added new insult : " +newInsult)
 
 async def roast(msg):
     if (msg.author.voice == None):
-        message = str(msg.author.mention) + " Join a voice channel, pussy lips..\n"+createInsult()
+        message = str(msg.author.mention) + " Join a voice channel, pussy lips.."
         await msg.channel.send(message)
         return
     
+    await msg.delete()
     channel = msg.author.voice.channel
 
     text = createInsult()
@@ -97,8 +71,8 @@ def createInsult():
   return random.choice(open("temp/insults.txt","r").readlines()).lower()
 
 def createWord():
-  first = random.choice(open("temp/first.txt","r").readlines())
-  last = random.choice(open("temp/last.txt","r").readlines())
+  first = random.choice(open("temp/first.txt","r").readlines()).lower()
+  last = random.choice(open("temp/last.txt","r").readlines()).lower()
   word = first + " " + last
   return word
 
